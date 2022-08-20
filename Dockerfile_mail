@@ -1,0 +1,7 @@
+FROM node:16
+WORKDIR /
+COPY package.json .
+RUN npm install
+COPY ./kafka ./logic/mail_sender.js mail_service.js .
+EXPOSE 3000
+CMD ["npm", "run", "mail_service"]
