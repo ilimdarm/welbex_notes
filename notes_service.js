@@ -1,7 +1,7 @@
 import fastify from "fastify"
 import cors from "fastify-cors"
 import {post_req} from "./logic/localrequests.js"
-import {createNote, getNotes, deleteNote, getNoteInfo, updateNote, checkAuth} from "./logic/notes.js"
+import {createNote, getNotes, deleteNote, getNoteInfo, updateNote} from "./logic/notes.js"
 
 const app = fastify()
 app.register(cors)
@@ -22,17 +22,9 @@ app.post("/notes/create", {
         }
     }
 }, async (req, res) => {
-    await checkAuth({token: req.body.token}).then((check) => {
-        if (!check){
-            return res.send({
-                state: 0
-            })
-        }
-        return createNote(req.body.data, (response) => {
-            res.send(response)
-        })
+    return createNote(req.body.data, (response) => {
+        res.send(response)
     })
-    
 })
 app.post("/notes/get_all", {
     schema: {
@@ -47,11 +39,6 @@ app.post("/notes/get_all", {
         }
     }
 }, (req, res) => {
-    if (!checkAuth({token: req.body.token})){
-        return res.send({
-            state: 0
-        })
-    }
     return getNotes((response) => {
         res.send(response)
     })
@@ -69,11 +56,6 @@ app.post("/notes/delete", {
         }
     }
 }, (req, res) => {
-    if (!checkAuth({token: req.body.token})){
-        return res.send({
-            state: 0
-        })
-    }
     return deleteNote(req.body, (response) => {
         res.send(response)
     })
@@ -91,11 +73,6 @@ app.post("/notes/get_one", {
         }
     }
 }, (req, res) => {
-    if (!checkAuth({token: req.body.token})){
-        return res.send({
-            state: 0
-        })
-    }
     return getNoteInfo(req.body, (response) => {
         res.send(response)
     })
@@ -116,11 +93,6 @@ app.post("/notes/update", {
         }
     }
 }, (req, res) => {
-    if (!checkAuth({token: req.body.token})){
-        return res.send({
-            state: 0
-        })
-    }
     return updateNote(req.body, (response) => {
         res.send(response)
     })
