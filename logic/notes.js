@@ -58,9 +58,6 @@ export const getNoteInfo = async (body, callback) => {
                 error: 'Ошибка! Заметки не существует!'
             })
         }
-        await notes.destroy({
-            where: {id:body.id}
-        })
         return callback({
             state: 1,
             body: result
